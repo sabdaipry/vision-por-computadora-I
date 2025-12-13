@@ -17,9 +17,10 @@ Implementación de algoritmos de *Auto-focus* y métricas de nitidez.
 * **Experimentación:** Análisis de robustez utilizando ROIs, Matrices de Enfoque y filtros de realce (*Unsharp Masking*), con un análisis crítico sobre los desplazamientos de detección introducidos por el ruido.
 
 ### 📂 [TP3: Detección de Objetos (Logotipos)](./TP3)
-Desafío de detección de patrones en condiciones no controladas (escala, rotación y deformación).
-* **Estrategia:** Desarrollo iterativo de un detector basado en **Template Matching Multiescala**.
-* **Innovación:** Implementación de estrategias de **Inversión de Contraste** para logos claros sobre fondo oscuro y **Non-Maximum Suppression (NMS)** para detección múltiple.
+Desafío de detección de patrones en condiciones no controladas (escala, rotación y deformación) mediante una arquitectura híbrida.
+* **Estrategia Inteligente:** Implementación de un flujo generalizado que alterna automáticamente entre detección por *features* (SIFT) y detección estructural (Bordes) según la complejidad de la imagen.
+* **Robustez Geométrica:** Uso de SIFT con validación por Homografía (RANSAC) y chequeo de inversión de color para garantizar cero falsos positivos en logos deformados.
+* **Detección Múltiple:** Desarrollo de un detector basado en *Canny Edge* + *Template Matching* Multiescala con *Non-Maximum Suppression* (NMS) para identificar múltiples instancias en entornos repetitivos.
 
 ## Requisitos y Ejecución
 
