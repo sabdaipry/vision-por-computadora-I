@@ -1,19 +1,17 @@
 # Trabajo Práctico N°3: Detección de Objetos (Logotipos)
 
-Este trabajo se centra en la detección de un logotipo específico (Coca-Cola) en un *dataset* de imágenes con variaciones de escala, iluminación y perspectiva, utilizando técnicas clásicas de visión sin *Deep Learning*.
+Este trabajo se centra en la detección de un logotipo específico (Coca-Cola) en un *dataset* de imágenes con variaciones extremas de escala, iluminación, perspectiva y oclusión, utilizando técnicas clásicas de visión por computadora (sin *Deep Learning*).
 
-## Estrategia de Solución
+## Estrategia de Solución: Arquitectura Híbrida
 
-Se desarrolló un algoritmo de ***Template Matching* Multiescala** que evolucionó a través de varias iteraciones para superar las dificultades del *dataset*.
+Para superar las limitaciones inherentes a cada método clásico por separado (donde SIFT falla en patrones repetitivos y *Template Matching* falla en rotaciones), se desarrolló una **Estrategia Híbrida Generalizada** con mecanismo de *fallback*.
 
-### Características del Algoritmo Final
-1.  **Búsqueda Multiescala:** Implementación de una pirámide de imágenes (*resizing* progresivo) para garantizar la invarianza a la escala.
-2.  **Invarianza de Contraste (Doble Chequeo):** Se identificó que el fallo principal en las detecciones iniciales se debía a la inversión de polaridad (letras blancas sobre fondo rojo vs. *template* negro sobre blanco). Se solucionó implementando una búsqueda paralela con el *template* normal e invertido.
-3.  ***Non-Maximum Suppression* (NMS):** Algoritmo para limpiar detecciones redundantes en el escenario de múltiples objetos.
+El sistema decide dinámicamente qué algoritmo utilizar basándose en la complejidad de la escena:
 
-## Análisis de Resultados y Limitaciones
-
-### Logros
-* Se logró una detección robusta y precisa en imágenes con logotipos planos o con rotaciones leves (Ítem 1).
-* El sistema es capaz de generalizar y encontrar múltiples instancias del objeto sin ajuste manual de parámetros.
-
+```mermaid
+graph TD;
+    A[Imagen de Entrada] --> B{¿SIFT encuentra<br>geometría válida?};
+    B -- Sí --> C["Retornar Detección SIFT<br>(Prioridad: Perspectiva/Rotación)"];
+    B -- No --> D["Activar Canny Multiescala<br>(Prioridad: Múltiples Objetos/Pequeños)"];
+    D --> E[Aplicar NMS];
+    E --> F[Retornar Detecciones Múltiples];
